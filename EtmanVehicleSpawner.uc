@@ -1,0 +1,1 @@
+class EtmanVehicleSpawner extends EtmanActor;
