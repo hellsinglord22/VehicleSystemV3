@@ -6,16 +6,18 @@ placeable;
 event Bump(Actor Other, PrimitiveComponent OtherComp, Vector HitNormal)
 {
     
+    `log(Other);
+    WorldInfo.game.broadcast(self,Other);
     if ( EtmanVehicle(Other) != none)
     {
            WorldInfo.game.broadcast(self,"You HIT A CAR");
-            ~log("You HIT A CAR");
+          `log("YOU HIT A CAR");
     }
    
     if(Other != none) 
     {
         WorldInfo.game.broadcast(self,"You are in my face");
-        `log("You hit me in the face as well");
+        `log("You hit an actor");
     }
 }
 
