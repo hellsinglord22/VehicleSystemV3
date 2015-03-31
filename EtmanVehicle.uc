@@ -20,9 +20,14 @@ event Bump(Actor Other, PrimitiveComponent OtherComp, Vector HitNormal)
         `log("You hit an actor");
     }
 }
+event Touch(Actor Other, PrimitiveComponent OtherComp, vector HitLocation, vector HitNormal)
+{
+    `log(Other);
+    WorldInfo.Game.Broadcast(self, Other);
+}
 
 defaultproperties
 {
     bCollideActors = true;
-    bBlockActors = true ; 
+    bBlockActors = false ; 
 }
