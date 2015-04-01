@@ -7,6 +7,7 @@ var array<EtmanPathNode_Traffic> trafficNodes;
 
 var EtmanPathNode_Traffic node;
 var EtmanPathNode_Traffic lastVisitedNode;
+var EtmanPathNode_TrafficLight trafficNode; 
 
 simulated function PostBeginPlay()
 {
@@ -25,8 +26,8 @@ event Possess(Pawn aPawn , bool bVehicleTransition)
  auto state GettingReady
 {
     Begin :
-        //`log("#####__ Map Info: "@ MapInfo@" ^^ __#####");   
-    Sleep(5);
+          
+    Sleep(1);
     
             //`log("#####__ Map Info: "@ MapInfo@" ^^ __#####");   
     `log("#####__ Now I'm ready to rock and roll ^^ __#####");   
@@ -47,6 +48,15 @@ state Wandering
             trafficNodes.AddItem(node);    
        }    
    }
+   foreach VisibleActors(class'EtmanPathNode_TrafficLight' , trafficNode , NODES_DISTANCE  , Pawn.Location )
+   {     
+       if(!node.Hidden )
+       {
+           `Log("########__ Taken Node -> "@ node @" __########");  
+            trafficNodes.AddItem(trafficNode);    
+       }    
+   }
+
     if (TrafficNodes.Length != 0)
     {
         node = TrafficNodes[Rand(trafficNodes.Length)];

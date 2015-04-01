@@ -1,0 +1,39 @@
+[1mdiff --git a/EtmanVehicleAiController.uc b/EtmanVehicleAiController.uc[m
+[1mindex 1cac9af..c731d33 100644[m
+[1m--- a/EtmanVehicleAiController.uc[m
+[1m+++ b/EtmanVehicleAiController.uc[m
+[36m@@ -7,6 +7,7 @@[m [mvar array<EtmanPathNode_Traffic> trafficNodes;[m
+ [m
+ var EtmanPathNode_Traffic node;[m
+ var EtmanPathNode_Traffic lastVisitedNode;[m
+[32m+[m[32mvar EtmanPathNode_TrafficLight trafficNode;[m[41m [m
+ [m
+ simulated function PostBeginPlay()[m
+ {[m
+[36m@@ -25,8 +26,8 @@[m [mevent Possess(Pawn aPawn , bool bVehicleTransition)[m
+  auto state GettingReady[m
+ {[m
+     Begin :[m
+[31m-        //`log("#####__ Map Info: "@ MapInfo@" ^^ __#####");   [m
+[31m-    Sleep(5);[m
+[32m+[m[41m          [m
+[32m+[m[32m    Sleep(1);[m
+     [m
+             //`log("#####__ Map Info: "@ MapInfo@" ^^ __#####");   [m
+     `log("#####__ Now I'm ready to rock and roll ^^ __#####");   [m
+[36m@@ -47,6 +48,15 @@[m [mstate Wandering[m
+             trafficNodes.AddItem(node);    [m
+        }    [m
+    }[m
+[32m+[m[32m   foreach VisibleActors(class'EtmanPathNode_TrafficLight' , trafficNode , NODES_DISTANCE  , Pawn.Location )[m
+[32m+[m[32m   {[m[41m     [m
+[32m+[m[32m       if(!node.Hidden )[m
+[32m+[m[32m       {[m
+[32m+[m[32m           `Log("########__ Taken Node -> "@ node @" __########");[m[41m  [m
+[32m+[m[32m            trafficNodes.AddItem(trafficNode);[m[41m    [m
+[32m+[m[32m       }[m[41m    [m
+[32m+[m[32m   }[m
+[32m+[m
+     if (TrafficNodes.Length != 0)[m
+     {[m
+         node = TrafficNodes[Rand(trafficNodes.Length)];[m
