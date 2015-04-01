@@ -53,7 +53,6 @@ state Wandering
        if(!node.Hidden )
        {
            `Log("########__ Taken Node -> "@ trafficNode @" __########");  
-           WorldInfo.Game.Broadcast(self, "You just added a trafficNode");
             trafficNodes.AddItem(trafficNode);    
        }    
    }
@@ -68,10 +67,17 @@ state Wandering
         if(EtmanPathnode_TrafficLight(node) != none)
         {
           WorldInfo.Game.Broadcast(self, "we have an EtmanTrafficLight here!");
+          
+          CheckAgain:
+          Sleep(0.4);
+          if(EtmanPathnode_TrafficLight(node).currentLight == red ){
+            WorldInfo.Game.Broadcast(self, "CheckingAgain");
+            GoTo('CheckAgain');
+          }
         }
         
         node.Hide(HIDE_TIME);
-        `Log('Hey');
+        WorldInfo.Game.Broadcast(self, "Finding new path");
     }
 
    GoTo('Begin');

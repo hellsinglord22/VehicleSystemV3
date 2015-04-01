@@ -10,8 +10,7 @@ enum EtmanTrafficLights
 };
 
 var EtmanTrafficLights currentLight; 
-
-
+var float remaingTime; 
 
 function PostBeginPlay(){
 	`log("Scorpion: Traffic light is created");
@@ -33,8 +32,6 @@ event Timer()
 	}
 
 	WorldInfo.Game.Broadcast(self, "CurrentColor" @ currentLight);
-
-
 }
 
 
