@@ -37,7 +37,7 @@ event Timer()
 
 DefaultProperties
 {
-	currentLight= red; 
+	currentLight= green; 
 
 	Begin Object name=Sprite
         Sprite=Texture2D'UDKHUD.flag_box_blue'
