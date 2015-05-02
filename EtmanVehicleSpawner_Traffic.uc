@@ -2,6 +2,7 @@ class EtmanVehicleSpawner_Traffic extends EtmanVehicleSpawner
 Placeable;
 
 var EtmanVehicle_Traffic SpawnedVehicle;
+var (AI_Variables) array<EtmanPathnode_Traffic> patrolNodes_list;
 
 simulated function PostBeginPlay()
 {
