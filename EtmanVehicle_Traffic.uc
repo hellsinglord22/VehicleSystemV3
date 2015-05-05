@@ -14,8 +14,7 @@ simulated function PostBeginPlay()
    if (self.DriverEnter(myDriver)){
     Self.Mesh.WakeRigidBody();
    }
-    
-    
+    myDriver.startingNode = startingNode;
 }
 
 
