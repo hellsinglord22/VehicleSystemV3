@@ -1,21 +1,20 @@
 class EtmanVehicle_Traffic extends EtmanVehicle;
 
-var pawn myDriver;
 
+/// Attributes /// 
+var EtmanVehicle_Driver myDriver;
+var EtmanPathnode_Traffic startingNode;
+
+// Method(S) // 
 simulated function PostBeginPlay()
 {
-    `log("#########__ Etman Vehicle Traffic PostBeginPlay _ ##########");
     super.PostBeginPlay();
-    
-    `Log("#####__ Vehicle Pawn is Here -> "@ self @" __#####");   
-
     myDriver = Spawn(class'EtmanVehicle_Driver' ,,, Location + vect(0,100,0));
-   `Log("#####__ Driver is ready -> "@ myDriver @" __#####");  
-    
-   if (self.DriverEnter(myDriver))
-    `Log("#######__  LOLOLOLOLOOOOOOOWWYYYYYYYYY  __########"); 
-    
+
+   if (self.DriverEnter(myDriver)){
     Self.Mesh.WakeRigidBody();
+   }
+    
     
 }
 
@@ -23,10 +22,6 @@ simulated function PostBeginPlay()
 function bool DriverEnter(Pawn P)
 {
     local Controller C;
-
-    `Log("#####__ Driver Enter Pawn P -> "@ P @" __#####");
-    `Log("#####__ Pawn Controller -> "@ P.Controller @" __#####");    
-    
     // Set pawns current controller to control the vehicle pawn instead
     C = P.Controller;
     Driver = P;
