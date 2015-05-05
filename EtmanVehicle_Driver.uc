@@ -1,5 +1,8 @@
 class EtmanVehicle_Driver extends UTPawn;
 
+/// variables // 
+var EtmanPathnode_Traffic startingNode;
+
 simulated function PostBeginPlay()
 {
     super.PostBeginPlay();
