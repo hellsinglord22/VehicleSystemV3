@@ -1,36 +1,21 @@
 class EtmanVehicleAiController extends AIController;
 
-const NODES_DISTANCE=1700; // approximate distance between every node and the nearst ones to it
-const HIDE_TIME= 90; // in seconds
 
-var array<EtmanPathNode_Traffic> trafficNodes;
-
-var EtmanPathNode_Traffic node;
-var EtmanPathNode_Traffic lastVisitedNode;
-var EtmanPathNode_TrafficLight trafficNode; 
 
 simulated function PostBeginPlay()
 {
     super.PostBeginPlay();
-    `Log("########__  Controller for vehicle is Here  __########");   
 }
 
 event Possess(Pawn aPawn , bool bVehicleTransition)
 {
     Super.Possess(aPawn , bVehicleTransition);
- 
-    //Pawn.SetMovementPhysics();   
-    `Log("########__  Pawn in Vehicle AI controller -> "@ Pawn @" __########");   
 }
 
  auto state GettingReady
 {
-    Begin :
-          
+    Begin : 
     Sleep(1);
-    
-            //`log("#####__ Map Info: "@ MapInfo@" ^^ __#####");   
-    `log("#####__ Now I'm ready to rock and roll ^^ __#####");   
     GotoState('Wandering');
 }
 
