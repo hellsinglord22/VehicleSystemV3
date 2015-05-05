@@ -1,12 +1,15 @@
 class EtmanVehicleSpawner_Traffic extends EtmanVehicleSpawner
 Placeable;
 
+/// Attriubtes // 
 var EtmanVehicle_Traffic SpawnedVehicle;
+var (AI_Attributes)EtmanPathnode_Traffic startingNode;
 
 
 simulated function PostBeginPlay()
 {
-     SpawnedVehicle = Spawn(class'EtmanVehicle_Traffic',,,Location);  
+     SpawnedVehicle = Spawn(class'EtmanVehicle_Traffic',,,Location); 
+     SpawnedVehicle.startingNode = startingNode;
 }
 
 function SpwanVehicle() 
