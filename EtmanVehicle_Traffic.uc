@@ -3,7 +3,7 @@ class EtmanVehicle_Traffic extends EtmanVehicle;
 
 /// Attributes /// 
 var EtmanVehicle_Driver myDriver;
-var EtmanPathnode_Traffic startingNode;
+var EtmanPathnode_Traffic startingNodeVehicle;
 
 // Method(S) // 
 simulated function PostBeginPlay()
@@ -14,7 +14,9 @@ simulated function PostBeginPlay()
    if (self.DriverEnter(myDriver)){
     Self.Mesh.WakeRigidBody();
    }
-    myDriver.startingNode = startingNode;
+    
+    myDriver.startingNodeDriver = startingNodeVehicle;
+    `log("it's the car"@startingNodeVehicle);
 }
 
 
@@ -49,5 +51,5 @@ function bool DriverEnter(Pawn P)
 
 defaultProperties
 {   
-
+   
 }

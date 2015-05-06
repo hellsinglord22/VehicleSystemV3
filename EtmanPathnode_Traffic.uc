@@ -1,18 +1,8 @@
 class EtmanPathnode_Traffic extends EtmanPathNode
 placeable;
 
-var bool Hidden;
-
-function Hide(int forHowLong)
-{
-    Hidden = true;   
-    SetTimer(forHowLong , false , 'ShowAgain');
-}
-function ShowAgain()
-{
-    Hidden = false;   
-}
-
+/// attributes //  
+var (AI_Attributes)EtmanPathnode_Traffic next;
 
 
 defaultproperties

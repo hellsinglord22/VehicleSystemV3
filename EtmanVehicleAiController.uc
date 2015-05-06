@@ -1,6 +1,11 @@
 class EtmanVehicleAiController extends AIController;
 
 
+/// Attrbutes // 
+var EtmanPathnode_TrafficLight nextDistination;
+var EtmanPathnode_TrafficLight startingNodeAI;
+var bool isCollide;
+
 
 simulated function PostBeginPlay()
 {
@@ -16,6 +21,8 @@ event Possess(Pawn aPawn , bool bVehicleTransition)
 {
     Begin : 
     Sleep(1);
+    /// todo: set the starting node
+    nextDistination = startingNodeAI;
     GotoState('Wandering');
 }
 
@@ -24,53 +31,37 @@ state Wandering
    Begin:
    sleep(0.4);
    
-   trafficNodes.Length = 0;
-   foreach VisibleActors(class'EtmanPathNode_Traffic' , node , NODES_DISTANCE  , Pawn.Location )
-   {     
-       if(!node.Hidden )
-       {
-           `Log("########__ Taken Node -> "@ node @" __########");  
-            trafficNodes.AddItem(node);    
-       }    
-   }
-   foreach VisibleActors(class'EtmanPathNode_TrafficLight' , trafficNode , NODES_DISTANCE  , Pawn.Location )
-   {     
-       if(!node.Hidden )
-       {
-           `Log("########__ Taken Node -> "@ trafficNode @" __########");  
-            trafficNodes.AddItem(trafficNode);    
-       }    
-   }
+    `Log("########__  Moving to -> "@ nextDistination @" , Location"@ node.Location@" __########");   
+    MoveTo(nextDistination.Location ,nextDistination); 
 
-    if (TrafficNodes.Length != 0)
+    if(EtmanPathnode_TrafficLight(nextDistination) != none)
     {
-        node = TrafficNodes[Rand(trafficNodes.Length)];
-        
-        `Log("########__  Moving to -> "@ node @" , Location"@ node.Location@" __########");   
-        MoveTo(node.Location , node); 
-
-        if(EtmanPathnode_TrafficLight(node) != none)
-        {
-          WorldInfo.Game.Broadcast(self, "we have an EtmanTrafficLight here!");
-          
-          CheckAgain:
-          Sleep(0.4);
-          if(EtmanPathnode_TrafficLight(node).currentLight == red ){
-            WorldInfo.Game.Broadcast(self, "CheckingAgain");
-            GoTo('CheckAgain');
-          }
-        }
-        
-        node.Hide(HIDE_TIME);
-        WorldInfo.Game.Broadcast(self, "Finding new path");
+      WorldInfo.Game.Broadcast(self, "we have an EtmanTrafficLight here!");
+      CheckTrafficLight:
+      Sleep(0.4);
+      if(EtmanPathnode_TrafficLight(node).currentLight == red ){
+        WorldInfo.Game.Broadcast(self, "CheckingAgain");
+        GoTo('CheckTrafficLight');
+      }
     }
 
-   GoTo('Begin');
+    CheckCollide:
+    /// Check collision /// 
+    /// TODO: Root Collision as well /// 
+    if(isCollide == true){
+      Sleep(0.4);
+      GoTo('CheckCollide');
+    }
+    
+    WorldInfo.Game.Broadcast(self, "Finding new path");
+    
+    /// set next distination 
+    nextDistination = nextDistination.next;
+    GoTo('Begin');
 }
 
 
 defaultProperties
 {
-    
-    
+    isCollide = false;   
 }

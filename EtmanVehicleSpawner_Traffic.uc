@@ -9,7 +9,8 @@ var (AI_Attributes)EtmanPathnode_Traffic startingNode;
 simulated function PostBeginPlay()
 {
      SpawnedVehicle = Spawn(class'EtmanVehicle_Traffic',,,Location); 
-     SpawnedVehicle.startingNode = startingNode;
+     SpawnedVehicle.startingNodeVehicle = startingNode;
+     `log("it's Spawner"@startingNode);
 }
 
 function SpwanVehicle() 
