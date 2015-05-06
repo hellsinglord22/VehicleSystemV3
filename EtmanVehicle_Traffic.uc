@@ -10,15 +10,25 @@ simulated function PostBeginPlay()
 {
     super.PostBeginPlay();
     myDriver = Spawn(class'EtmanVehicle_Driver' ,,, Location + vect(0,100,0));
-
+   
    if (self.DriverEnter(myDriver)){
     Self.Mesh.WakeRigidBody();
    }
     
-    myDriver.startingNodeDriver = startingNodeVehicle;
     `log("it's the car"@startingNodeVehicle);
+    setTimer(2,false,'LogTimer');
+    setTimer(0.5 , true , 'sendCollisionInformation');
 }
-
+function LogTimer()
+{
+    `Log('startingNodeVehicle'@startingNodeVehicle);
+    myDriver.startingNodeDriver = startingNodeVehicle;
+    
+}
+function sendCollisionInformation()
+{
+    myDriver.hitSomething = hitSomething;
+}
 
 function bool DriverEnter(Pawn P)
 {

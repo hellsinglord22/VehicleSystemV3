@@ -2,60 +2,71 @@ class EtmanVehicleAiController extends AIController;
 
 
 /// Attrbutes // 
-var EtmanPathnode_TrafficLight nextDistination;
-var EtmanPathnode_TrafficLight startingNodeAI;
+var EtmanPathnode_Traffic nextDistination;
+var EtmanPathnode_Traffic startingNodeAI;
 var bool isCollide;
 
 
 simulated function PostBeginPlay()
 {
     super.PostBeginPlay();
+    setTimer(4 , True , 'logTest');
 }
 
 event Possess(Pawn aPawn , bool bVehicleTransition)
 {
     Super.Possess(aPawn , bVehicleTransition);
 }
+function logTest(){
+  `Log('startingNodeVehicle'@startingNodeAI);
+  WorldInfo.Game.Broadcast(self, "nextDistination is " @nextDistination);
+  `log('AI Next distination' @ nextDistination);
+}
 
+/*
+Getting read state
+sleep for 4 second(s)
+getting the information needed (startingNode) and
+assign this information to a next distination variable 
+**/
  auto state GettingReady
 {
     Begin : 
-    Sleep(1);
-    /// todo: set the starting node
+    Sleep(10);
+    if(EtmanVehicle_Traffic(Pawn) != none){
+      startingNodeAI= EtmanVehicle_Traffic(Pawn).startingNodeVehicle; 
+    }         
     nextDistination = startingNodeAI;
+    WorldInfo.Game.Broadcast(self, "startingNode " @startingNodeAI);
     GotoState('Wandering');
 }
 
+/**
+Wandering 
+start by sleeping for 0.4 second 
+and move to the next location 
+after this it check collision and traffic light 
+and decied it's next destination and go into an infinit 
+loop the car keep moving in the loop for ever 
+*/
 state Wandering
 {
+  
    Begin:
    sleep(0.4);
    
-    `Log("########__  Moving to -> "@ nextDistination @" , Location"@ node.Location@" __########");   
     MoveTo(nextDistination.Location ,nextDistination); 
-
     if(EtmanPathnode_TrafficLight(nextDistination) != none)
     {
       WorldInfo.Game.Broadcast(self, "we have an EtmanTrafficLight here!");
       CheckTrafficLight:
       Sleep(0.4);
-      if(EtmanPathnode_TrafficLight(node).currentLight == red ){
-        WorldInfo.Game.Broadcast(self, "CheckingAgain");
-        GoTo('CheckTrafficLight');
+      if(EtmanPathnode_TrafficLight(nextDistination).currentLight == red ){
+        GoTo('CheckTrafficLight');2
       }
     }
 
-    CheckCollide:
-    /// Check collision /// 
-    /// TODO: Root Collision as well /// 
-    if(isCollide == true){
-      Sleep(0.4);
-      GoTo('CheckCollide');
-    }
-    
     WorldInfo.Game.Broadcast(self, "Finding new path");
-    
-    /// set next distination 
     nextDistination = nextDistination.next;
     GoTo('Begin');
 }
