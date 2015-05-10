@@ -11,17 +11,37 @@ simulated function PostBeginPlay()
 {
     super.PostBeginPlay();
     setTimer(4 , True , 'logTest');
+    setTimer(0.5 , true , 'checkCollision');
 }
 
 event Possess(Pawn aPawn , bool bVehicleTransition)
 {
     Super.Possess(aPawn , bVehicleTransition);
 }
+event bool NotifyBump(Actor  Other, Vector HitNormal){
+      if(Other != none){
+        WorldInfo.Game.Broadcast(self, "Collide with " @Other);
+        return true;  
+      }
+}
+
+function checkCollision(){
+    /// Check collision /// 
+    isCollide = EtmanVehicle_Traffic(Pawn).hitSomething;
+    if(isCollide == true){
+        StopLatentExecution();
+        Pawn.Acceleration.X = 0;
+        Pawn.Acceleration.Y = 0;
+        Pawn.Acceleration.Z = 0;
+        WorldInfo.Game.Broadcast(self, "stop the car");
+    }
+}
 function logTest(){
   `Log('startingNodeVehicle'@startingNodeAI);
   WorldInfo.Game.Broadcast(self, "nextDistination is " @nextDistination);
   `log('AI Next distination' @ nextDistination);
 }
+
 
 /*
 Getting read state
@@ -55,6 +75,7 @@ state Wandering
    Begin:
    sleep(0.4);
    
+   /// Car stop for Collision and Traffic light /// 
     MoveTo(nextDistination.Location ,nextDistination); 
     if(EtmanPathnode_TrafficLight(nextDistination) != none)
     {
@@ -62,9 +83,10 @@ state Wandering
       CheckTrafficLight:
       Sleep(0.4);
       if(EtmanPathnode_TrafficLight(nextDistination).currentLight == red ){
-        GoTo('CheckTrafficLight');2
+        GoTo('CheckTrafficLight');
       }
     }
+
 
     WorldInfo.Game.Broadcast(self, "Finding new path");
     nextDistination = nextDistination.next;
@@ -72,7 +94,8 @@ state Wandering
 }
 
 
+
 defaultProperties
 {
-    isCollide = false;   
+    isCollide= false
 }

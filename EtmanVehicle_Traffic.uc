@@ -17,17 +17,12 @@ simulated function PostBeginPlay()
     
     `log("it's the car"@startingNodeVehicle);
     setTimer(2,false,'LogTimer');
-    setTimer(0.5 , true , 'sendCollisionInformation');
 }
 function LogTimer()
 {
     `Log('startingNodeVehicle'@startingNodeVehicle);
     myDriver.startingNodeDriver = startingNodeVehicle;
     
-}
-function sendCollisionInformation()
-{
-    myDriver.hitSomething = hitSomething;
 }
 
 function bool DriverEnter(Pawn P)
