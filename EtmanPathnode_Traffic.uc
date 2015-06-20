@@ -1,3 +1,4 @@
+/// Ever node have the next node destination so the AI can follow it 
 class EtmanPathnode_Traffic extends EtmanPathNode
 placeable;
 

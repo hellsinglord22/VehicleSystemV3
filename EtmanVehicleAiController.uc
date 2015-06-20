@@ -6,7 +6,11 @@ var EtmanPathnode_Traffic nextDistination;
 var EtmanPathnode_Traffic startingNodeAI;
 var bool isCollide;
 
-
+/*
+  The post begin play have to functionality 
+  first one : set time for logTest 
+  second one: set checkCollision timer
+*/
 simulated function PostBeginPlay()
 {
     super.PostBeginPlay();
@@ -18,6 +22,9 @@ event Possess(Pawn aPawn , bool bVehicleTransition)
 {
     Super.Possess(aPawn , bVehicleTransition);
 }
+
+/* This is a better way to find collision instade of rooting 
+ and you can remove from line 28 to line 33 */
 event bool NotifyBump(Actor  Other, Vector HitNormal){
       if(Other != none){
         WorldInfo.Game.Broadcast(self, "Collide with " @Other);
@@ -25,10 +32,17 @@ event bool NotifyBump(Actor  Other, Vector HitNormal){
       }
 }
 
+/*
+This function is the function that check collision and 
+do what it should be done when collision occure which is 
+stoping the car 
+*/
 function checkCollision(){
     /// Check collision /// 
     isCollide = EtmanVehicle_Traffic(Pawn).hitSomething;
     if(isCollide == true){
+
+      /// From line number 46 yo 49 it should stop the car 
         StopLatentExecution();
         Pawn.Acceleration.X = 0;
         Pawn.Acceleration.Y = 0;
@@ -36,6 +50,8 @@ function checkCollision(){
         WorldInfo.Game.Broadcast(self, "stop the car");
     }
 }
+
+// this fucntion just work as a log
 function logTest(){
   `Log('startingNodeVehicle'@startingNodeAI);
   WorldInfo.Game.Broadcast(self, "nextDistination is " @nextDistination);
@@ -44,8 +60,8 @@ function logTest(){
 
 
 /*
-Getting read state
-sleep for 4 second(s)
+Getting ready state
+sleep for 10 second(s)
 getting the information needed (startingNode) and
 assign this information to a next distination variable 
 **/

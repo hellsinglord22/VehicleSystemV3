@@ -19,5 +19,5 @@ function LogTest()
 defaultProperties
 {       
     ControllerClass=class'EtmanVehicleAiController'       
-    hitSomething = false ; 
+    hitSomething= false 
 }

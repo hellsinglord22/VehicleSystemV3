@@ -1,3 +1,5 @@
+///// All what i did in this class is changing the type 
+// of the driver from Pawn to myDrive so i can root information 
 class EtmanVehicle_Traffic extends EtmanVehicle;
 
 

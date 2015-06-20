@@ -1,3 +1,4 @@
+/// this contain the traffic light logic you don't have to run over this 
 class EtmanPathnode_TrafficLight extends EtmanPathnode_Traffic 
 placeable ; 
 
