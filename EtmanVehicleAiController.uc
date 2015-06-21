@@ -14,7 +14,7 @@ var bool isCollide;
 simulated function PostBeginPlay()
 {
     super.PostBeginPlay();
-    setTimer(4 , True , 'logTest');
+    setTimer(1 , True , 'logTest');
     setTimer(0.5 , true , 'checkCollision');
 }
 
@@ -38,17 +38,12 @@ do what it should be done when collision occure which is
 stoping the car 
 */
 function checkCollision(){
-    /// Check collision /// 
-    isCollide = EtmanVehicle_Traffic(Pawn).hitSomething;
-    if(isCollide == true){
-
-      /// From line number 46 yo 49 it should stop the car 
-        StopLatentExecution();
-        Pawn.Acceleration.X = 0;
-        Pawn.Acceleration.Y = 0;
-        Pawn.Acceleration.Z = 0;
-        WorldInfo.Game.Broadcast(self, "stop the car");
-    }
+  local vector currentLocation; 
+  local Rotator currentRotation; 
+  pawn.GetActorEyesViewPoint(currentLocation, currentRotation);
+  WorldInfo.Game.Broadcast(self, "Current Location: " @currentLocation);
+  WorldInfo.Game.Broadcast(self, "Crrent Rotation: " @currentRotation);
+  
 }
 
 // this fucntion just work as a log
@@ -56,6 +51,7 @@ function logTest(){
   `Log('startingNodeVehicle'@startingNodeAI);
   WorldInfo.Game.Broadcast(self, "nextDistination is " @nextDistination);
   `log('AI Next distination' @ nextDistination);
+  WorldInfo.Game.Broadcast(self, "nextDistination is " @nextDistination);
 }
 
 
