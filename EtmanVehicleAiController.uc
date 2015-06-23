@@ -4,7 +4,6 @@ class EtmanVehicleAiController extends AIController;
 /// Attrbutes // 
 var EtmanPathnode_Traffic nextDistination;
 var EtmanPathnode_Traffic startingNodeAI;
-var bool isCollide;
 
 /*
   The post begin play have to functionality 
@@ -15,7 +14,7 @@ simulated function PostBeginPlay()
 {
     super.PostBeginPlay();
     setTimer(1 , True , 'logTest');
-    setTimer(0.5 , true , 'checkCollision');
+    setTimer(0.1 , true , 'checkCollision');
 }
 
 event Possess(Pawn aPawn , bool bVehicleTransition)
@@ -23,27 +22,39 @@ event Possess(Pawn aPawn , bool bVehicleTransition)
     Super.Possess(aPawn , bVehicleTransition);
 }
 
-/* This is a better way to find collision instade of rooting 
- and you can remove from line 28 to line 33 */
-event bool NotifyBump(Actor  Other, Vector HitNormal){
-      if(Other != none){
-        WorldInfo.Game.Broadcast(self, "Collide with " @Other);
-        return true;  
-      }
-}
-
 /*
-This function is the function that check collision and 
-do what it should be done when collision occure which is 
-stoping the car 
+Check Collision in appromix. 35 Unreal Unit in the car direction
+and stop the car from moving any farther if it collid with anything
 */
 function checkCollision(){
   local vector currentLocation; 
   local Rotator currentRotation; 
+  local vector traceEnd; 
+  local Actor gotHit; 
+  local vector hitLocation; 
+  local vector hitNormal;
+  //local bool didTrace;
   pawn.GetActorEyesViewPoint(currentLocation, currentRotation);
-  WorldInfo.Game.Broadcast(self, "Current Location: " @currentLocation);
-  WorldInfo.Game.Broadcast(self, "Crrent Rotation: " @currentRotation);
-  
+
+  traceEnd = currentLocation;
+  traceEnd += Normal(nextDistination.Location - currentLocation) * 350; 
+  currentLocation.z -= 30;
+  traceEnd.z = currentLocation.z;
+
+ 
+
+  gotHit = Trace(hitLocation,  hitNormal,  traceEnd,  currentLocation,
+              true,vect(20,20,0),,);
+  DrawDebugLine(currentLocation, traceEnd, 1, 1, 1,);
+
+  if(gotHit == none){
+    WorldInfo.Game.Broadcast(self, "car see nothing");
+  }else
+  {
+    WorldInfo.Game.Broadcast(self, "i see you");
+  }
+
+
 }
 
 // this fucntion just work as a log
@@ -109,5 +120,5 @@ state Wandering
 
 defaultProperties
 {
-    isCollide= false
+    
 }
